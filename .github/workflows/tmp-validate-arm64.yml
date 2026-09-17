@@ -1,0 +1,28 @@
+name: TEMP Validate linuxarm64 target
+
+on:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - run: sudo apt-get update && sudo apt-get install -y build-essential file
+
+      - run: ./gradlew :imgui-binding:compileJava
+
+      - run: ./gradlew :imgui-binding:generateLibs -Denvs=linuxarm64 -Dlocal
+
+      - run: |
+          SO_PATH="imgui-binding/build/libsNative/linuxarm64/libimgui-java64.so"
+          file "$SO_PATH"
+          file "$SO_PATH" | grep -q 'ARM aarch64' || { echo "NOT ARM64" >&2; exit 1; }
