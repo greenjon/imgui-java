@@ -77,6 +77,27 @@ case "$VTYPE" in
         fi
         echo "SO file copied to /tmp/imgui/dst/libimgui-java64.so successfully"
         ;;
+    linuxarm64)
+        echo "Running Gradle task for Linux ARM64 (native aarch64 host required)..."
+        ./gradlew imgui-binding:generateLibs -Denvs=linuxarm64 -Dfreetype=true
+        if [ $? -ne 0 ]; then
+            echo "Gradle task for Linux ARM64 failed"
+            exit 1
+        fi
+
+        echo "Checking if the generated SO file exists..."
+        check_file_exists /tmp/imgui/libsNative/linuxarm64/libimgui-java64.so
+
+        # Distinct name: CI merges every platform's output into one flat directory (bin/),
+        # so it must not collide with the x86-64 libimgui-java64.so.
+        echo "Copying the generated SO file to the destination directory..."
+        cp /tmp/imgui/libsNative/linuxarm64/libimgui-java64.so /tmp/imgui/dst/libimgui-java64-arm64.so
+        if [ $? -ne 0 ]; then
+            echo "Failed to copy SO file to /tmp/imgui/dst/libimgui-java64-arm64.so"
+            exit 1
+        fi
+        echo "SO file copied to /tmp/imgui/dst/libimgui-java64-arm64.so successfully"
+        ;;
     macos)
         echo "Running Gradle task for macOS and macOS ARM..."
         ./gradlew imgui-binding:generateLibs -Denvs=macos,macosarm64 -Dfreetype=true

@@ -55,6 +55,8 @@ jobs:
         target:
           - os: ubuntu-latest
             type: linux
+          - os: ubuntu-24.04-arm
+            type: linuxarm64
           - os: ubuntu-latest
             type: windows
           - os: macos-latest

@@ -25,11 +25,13 @@ The expected library file names for different operating systems are:
 |---------|-----------------------|
 | Windows | imgui-java64.dll      |
 | Linux   | libimgui-java64.so    |
+| Linux ARM64 | libimgui-java64-arm64.so |
 | macOS   | libimgui-java64.dylib |
 
 ### Additional Information
 
 - All libraries include statically compiled **FreeType**.
+- `libimgui-java64-arm64.so` is the Linux aarch64 build. Its file name differs from the x86-64 one only because CI collects every platform into this single directory; when loading it by path, pass `-Dimgui.library.name=libimgui-java64-arm64.so`.
 - The macOS version is a universal library and support x86_64 and arm64 architectures.
 
 ### Continuous Integration
