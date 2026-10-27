@@ -19,6 +19,7 @@ def packageDesc = 'Native binaries for imgui-java binding for Linux'
 def moduleName = 'imgui.natives.linux'
 def fromDir = '../bin'
 def libName = 'libimgui-java64.so'
+def jarLibName = null // set when the file name in bin/ differs from the name the loader expects on the classpath
 
 switch (findProperty('deployType')) {
     case 'windows':
@@ -33,6 +34,13 @@ switch (findProperty('deployType')) {
         moduleName = 'imgui.natives.linux'
         libName = 'libimgui-java64.so'
         break
+    case 'linuxarm64':
+        packageName = 'imgui-java-natives-linux-arm64'
+        packageDesc = 'Native binaries for imgui-java binding for Linux ARM64'
+        moduleName = 'imgui.natives.linux.arm64'
+        libName = 'libimgui-java64-arm64.so'
+        jarLibName = 'libimgui-java64.so'
+        break
     case 'macos':
         packageName = 'imgui-java-natives-macos'
         packageDesc = 'Native binaries for imgui-java binding for macOS'
@@ -45,6 +53,9 @@ jar {
     from(fromDir) {
         include "$libName" // this is fine
         into 'io/imgui/java/native-bin/'
+        if (jarLibName != null) {
+            rename { jarLibName }
+        }
     }
     manifest {
         attributes  'Automatic-Module-Name': moduleName
