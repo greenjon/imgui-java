@@ -40,6 +40,7 @@ publish_natives() {
 # Publish natives for each platform
 publish_natives "windows"
 publish_natives "linux"
+publish_natives "linuxarm64"
 publish_natives "macos"
 
 echo "> Nexus manual upload..."

@@ -84,6 +84,10 @@ case "$VTYPE" in
     linux)
         build_freetype "-fPIC" "" "lib/libfreetype.a"
         ;;
+    linuxarm64)
+        # Built natively on an aarch64 host (e.g. the ubuntu-24.04-arm runner), so no --host/cross prefix.
+        build_freetype "-fPIC" "" "lib/libfreetype.a"
+        ;;
     macos)
         MACOS_VERSION=10.15
 
